@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portafolio de Certificaciones - Fernando Fortanel</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --glow-color-1: rgba(0, 220, 255, 0.5);
+            --glow-color-2: rgba(200, 100, 255, 0.5);
+        }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #0d0d1a;
+            position: relative;
+            overflow-x: hidden;
+            color: #e0e0e0;
+        }
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 15% 25%, var(--glow-color-1), transparent 40%),
+                radial-gradient(circle at 85% 75%, var(--glow-color-2), transparent 40%);
+            animation: moveGradient 20s ease infinite;
+            z-index: 1;
+        }
+        body::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMzAwIj48ZmlsdGVyIGlkPSJub2lzZSI+PGZlVHVyYnVsZW5jZSB0eXBlPSJmcmFjdGFsTm9pc2UiIGJhc2VGcmVxdWVuY3k9IjAuOCIgbnVtT2N0YXZlcz0iMyIgc3RpdGNoVGlsZXM9InN0aXRjaCIvPjxmZUNvbG9yTWF0cml4IHR5cGU9InNhdHVyYXRlIiB2YWx1ZXM9IjAiLz48L2ZpbHRlcj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZHRoPSIxMDAlIiBmaWx0ZXI9InVybCgjbm9pc2UpIi8+PC9zdmc+');
+            opacity: 0.05;
+            z-index: 2;
+            pointer-events: none;
+        }
+        @keyframes moveGradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .main-container { position: relative; z-index: 3; }
+        
+        .frosted-glass {
+            background: rgba(20, 20, 35, 0.5);
+            backdrop-filter: blur(12px) saturate(150%);
+            -webkit-backdrop-filter: blur(12px) saturate(150%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .cert-card {
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            animation: fadeIn 0.5s ease-out forwards;
+            opacity: 0;
+        }
+        .cert-card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 20px rgba(0, 220, 255, 0.2);
+        }
+        .card-header { cursor: pointer; }
+        .card-header:hover { background: rgba(255, 255, 255, 0.05); }
+        .cert-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-out, padding 0.5s ease-out;
+        }
+        .cert-content.open {
+            max-height: 1500px;
+            padding-top: 1rem;
+            padding-bottom: 0.5rem;
+        }
+        .chevron { transition: transform 0.3s ease-in-out; }
+        .open .chevron { transform: rotate(180deg); }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .filter-btn {
+            transition: all 0.3s ease;
+            color: #a7a7b1;
+            font-weight: 500;
+        }
+        .filter-btn:hover { 
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+        }
+        .filter-btn.active {
+            background-color: #00dcec;
+            color: #0d0d1a;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body class="min-h-screen w-full p-4 sm:p-6 lg:p-8">
+
+    <div class="main-container max-w-7xl mx-auto">
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+            <!-- Sidebar de Navegación -->
+            <aside class="lg:col-span-1 lg:sticky top-8 self-start">
+                <div class="frosted-glass p-6 rounded-2xl">
+                    <h2 class="text-2xl font-bold text-white mb-6">Categorías</h2>
+                    <div id="filter-container" class="space-y-2">
+                        <!-- Botones de filtro se insertarán aquí -->
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Contenido Principal -->
+            <div class="lg:col-span-3">
+                <header class="text-left mb-8">
+                    <h1 class="text-5xl md:text-6xl font-bold text-white tracking-tight"> Fernando Fortanel </h1>
+                    <p class="mt-3 text-xl text-cyan-300 font-light"> Portafolio de Certificaciones </p>
+                </header>
+                
+                <div class="mb-8">
+                    <input type="text" id="search-input" placeholder="Buscar certificación..." class="w-full p-4 rounded-xl frosted-glass text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-400">
+                </div>
+
+                <main id="certifications-container" class="space-y-4">
+                    <!-- Las categorías se insertarán aquí dinámicamente -->
+                </main>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- ADMINISTRA TUS CERTIFICACIONES Y ENLACES AQUÍ ---
+        const certificationGroups = [
+            // TAGS: Agile, Lean Portafolio Management, Product Management, Business Analyst, Business Strategy & OKR, Tech & Data, Mentoring & Coaching, Gestion de Proyectos, Gestion de Procesos & Lean Six Sigma, Arquitectura Empresarial, Customer Experience, Product Discovery
+            { category: 'SCRUM Certiprof', tag: 'Agile', icon: `<svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>`, certifications: [ { title: 'SCRUM Foundation Professional Certificate', date: '26/01/2021', link: 'https://www.credly.com/badges/ed5f2ee6-f618-4806-b002-8e7ef9f33015/public_url' }, { title: 'SCRUM Master Professional Certificate', date: '26/01/2021', link: 'https://www.credly.com/badges/99027434-4d45-4a17-9bdb-a129707adcdb/public_url' }, { title: 'SCRUM Master Professional Certificate (actualizacion guia 2020)', date: '19/05/2022', link: 'https://www.credly.com/badges/ea10cdb5-8549-45b3-9190-ab5d051dd03d/public_url' }, { title: 'SCRUM Developer Professional Certificate', date: '02/02/2024', link: 'https://www.credly.com/badges/76b7c95e-24a0-4289-9a69-e16cd1376d6e/public_url' } ] },
+            { category: 'SCRUM Scalade Certiprof', tag: 'Agile', icon: `<svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-green-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M7 11l5-5m0 0l5 5m-5-5v12" /></svg>`, certifications: [ { title: 'Scaled Scrum Professional Certification - SSPC', date: '12/04/2024', link: 'https://www.credly.com/badges/3ce71081-0aed-4e7f-aeb0-869c8822616f/public_url' } ] },
+            { category: 'Lean Portafolio Manager SAFE', tag: 'Lean Portafolio Management', icon: `<svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>`, certifications: [ { title: 'Certified SAFe 5 Lean Portfolio Manager', date: '31/01/2024', link: 'https://www.credly.com/earner/earned/badge/04c970f7-7e71-40fe-b007-524f3dcc5bc0' }, { title: 'Certified SAFe 6 Lean Portfolio Manager', date: '31/01/2024', link: 'https://www.credly.com/earner/earned/badge/04c970f7-7e71-40fe-b007-524f3dcc5bc0' }, { title: 'Certified Value stream mapping SAFE y topologías de equipo', date: '28/09/2023', link: 'https://verified.sertifier.com/es/verify/37018847578896/' } ] },
+            { category: 'Lean Product Portafolio Management', tag: 'Lean Portafolio Management', icon: `<svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-purple-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" /></svg>`, certifications: [ { title: 'Lean Product Portafolio Management University of Maryland', date: '02/06/2025', link: 'https://coursera.org/share/d54ebf109e831e079480a04f2aac31f7'}, { title: 'Lean Product Portfolios: Beyond Value Stream Mapping', date: '02/06/2025', link: 'https://coursera.org/share/8dd9c2e86232ce4e01c2a8f985551382' }, { title: 'Framework: Transform the Business Model', date: '02/06/2025', link: 'https://coursera.org/share/9552c25daba9a02ee632b7194859f01a' }, { title: 'Customer-Centric Enterprise: Product Lifecycle Management', date: '02/06/2025', link: 'https://coursera.org/share/ead3ca9ee1a46527314125b6f482bb2b' } ] },
+            { category: 'Business Analyst IIBA SEAN', tag: 'Business Analyst', icon: `<svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" /></svg>`, certifications: [ { title: 'BABOK modulo 1 Introduccion al analisis de negocio', date: '02/03/2021', link: 'https://drive.google.com/file/d/1wOPS1e1iEkI9EvcP-tchSCR5B0x4m72Z/view' }, { title: 'BABOK módulo 2 Conceptos clave del análisis de negocio', date: '03/05/2021', link: 'https://drive.google.com/file/d/1AcK1rSk8mB1TQ33ZV3S-wmjkli2natpb/view?usp=sharing' }, { title: 'BABOK módulo 3 Planificación y monitoreo del análisis de negocio', date: '11/05/2021', link: 'https://drive.google.com/file/d/1z_IoleCAYs-8W7ZtOKd9sphWKlMaJcfO/view?usp=sharing' }, { title: 'BABOK módulo 4 Elicitación de requerimientos', date: '13/06/2022', link: 'https://drive.google.com/file/d/14qj4NilaMat_cZgooTTY0Z1A2HOk-WzC/view?usp=sharing' }, { title: 'BABOK módulo 5 Administración ciclo de vida de requerimientos', date: '09/08/2022', link: 'https://drive.google.com/file/d/17WC6WZjGMXz3JXvHIna8QgbPZEe6Jf6z/view?usp=sharing' }, { title: 'BABOK módulo 6 Análisis de la estrategia', date: '28/09/2022', link: 'https://drive.google.com/file/d/19cP4yBvLegrsehmKLODiUvUGR4x_mzov/view?usp=sharing' }, { title: 'BABOK módulo 7 Análisis y definición del diseño', date: '08/06/2023', link: 'https://drive.google.com/file/d/1001KvEsi5b_yLeQ6Xs-h2aCrkBwoKoa6/view?usp=sharing' }, { title: 'BABOK módulo 8 Evaluación de la solución', date: '', link: '#' } ] },
+            { category: 'Certified Business Analysis Professional™ (CBAP®)', tag: 'Business Analyst', icon: `<svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-yellow-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" /></svg>`, certifications: [ { title: 'Certified Business Analysis Professional™ (CBAP®) IIBA&Starweaver', date: '', link: 'https://coursera.org/share/01425ce91d986b2b0d04eb79a1a47692' }, { title: 'Business Analysis: Key Definitions & Strategy Analysis', date: '09/03/2025', link: 'https://coursera.org/share/873b5b46784096c568deb876da110ccc' }, { title: 'Advanced Business Analysis: Elicitation & Analysis', date: '02/08/2025', link: 'https://coursera.org/share/1a65b6a46e4011c84bcf1cafecc66e75' }, { title: 'Advanced Requirements Management & Solution Evaluation', date: '02/08/2025', link: 'https://coursera.org/share/ed4a7896ae4527b4c1b39a9305160c9f' }, { title: 'Business Analysis Mastery: Planning, Skills, and Perspective', date: '13/05/2025', link: 'https://coursera.org/share/e3f8be833018dea1b43446a619341194' } ] },
+            { category: 'Agile Business Analyst IIBA SEAN', tag: 'Business Analyst', icon: `<svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" /></svg>`, certifications: [ { title: 'Agile Business Analysis IIBA® - AAC Preparation Course', date: '24/06/2022', link: 'https://drive.google.com/file/d/1pB-0Cgf8CZIPYUIAYFriFyd-5OFPizFh/view?usp=sharing' } ] },
+            { category: 'Métricas Ágiles', tag: 'Agile', icon: `<svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-cyan-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 13v-1m4 1v-3m4 3V8M8 21l4-4 4 4M3 4h18M4 4h16v12a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" /></svg>`, certifications: [ { title: 'Certified Metricas lean y devops', date: '28/09/2023', link: 'https://verified.sertifier.com/es/verify/93916412286687/' } ] },
+            { category: 'Software Product Management', tag: 'Product Management', icon: `<svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0v-4m0 4h5m0-4v-4m0 4h2" /></svg>`, certifications: [ { title: 'Software Product Management Specialization University of Alberta', date: '', link: 'https://www.coursera.org/account/accomplishments/specialization/4AH0U0922G3D?utm_source=link&utm_medium=certificate&utm_content=cert_image&utm_campaign=sharing_cta&utm_product=s12n' }, { title: 'Introduction to Software Product Management', date: '10/09/2022', link: 'https://coursera.org/share/eeaa01fffc52a8d6072dbfc329b58c28' }, { title: 'Software Process and Agile Practices', date: '10/09/2022', link: 'https://coursera.org/share/e90e762aca55b1713607375591d244d6' }, { title: 'Client Needs and Software Requirements', date: '31/07/2025', link: 'https://coursera.org/share/190309024d74fa665ce7fae6f0236e72' }, { title: 'Agile Planning for Software Products', date: '18/08/2022', link: 'https://coursera.org/share/e34072c98015fab0a56c8aa22b266061' }, { title: 'Reviews & Metrics for Software Improvements', date: '29/08/2022', link: 'https://coursera.org/share/4d053bb33a18f031e8430fed99562fc7' } ] },
+            { category: 'Business Agility', tag: 'Agile', icon: `<svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" /></svg>`, certifications: [ { title: 'Certified Business Agility', date: '15/08/2023', link: 'https://drive.google.com/file/d/17CLDhdpzPLlxCMeGWWCb0IxcSu4vNd6J/view?usp=drive_link' }, { title: 'Business Agility', date: '23/08/2023', link: 'https://drive.google.com/file/d/1MwMG0047S1j5HLESxruilWQpZ1AeoaEa/view?usp=sharing' }, { title: 'Business Agility Professional Certification BAPC', date: '25/01/2025', link: 'https://drive.google.com/file/d/137LN6qOxde43Kb2PW4QR42S3O2lKz4aI/view?usp=sharing' } ] },
+            { category: 'Historias de Usuario Certiprof', tag: 'Agile', icon: `<svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-pink-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" /></svg>`, certifications: [ { title: 'Taller de historias de usuario', date: '', link: '#' }, { title: 'INVEST', date: '', link: 'https://drive.google.com/file/d/1jLpypdWcJv6JcmA8Zrth8IX4FmPb77P9/view?usp=sharing' }, { title: 'Curso Historias de Usuario', date: '', link: '#' }, { title: 'User Stories Foundations Certificate', date: '15/08/2024', link: 'https://www.credly.com/earner/earned/badge/063b67ad-3393-47d0-b188-cfe11efc3ae3' } ] },
+            { category: 'Management 3.0', tag: 'Agile', icon: `<svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M15 21v-1a6 6 0 00-1-3.72a4 4 0 00-4 0A6 6 0 003 20v1h12z" /></svg>`, certifications: [ { title: 'Certified Management 3.0 Foundation Workshop Attende', date: '', link: 'https://management30.com/badges/fernando-fortanel-velazquez-1685007623640623a895e9d/' } ] },
+            { category: 'OKR Certiprof', tag: 'Business Strategy & OKR', icon: `<svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" /></svg>`, certifications: [ { title: 'OKR Seminar', date: '28/08/2022', link: 'https://drive.google.com/file/d/1m8U8gf-P8I2DtSXKF9L6e5YD-sp-sAVW/view?usp=sharing' }, { title: 'OKR Fundamental', date: '31/03/2022', link: 'https://drive.google.com/file/d/1wDMJ8bXHKCQZ_mokrG6RtxehaWHncYyN/view?usp=sharing' }, { title: 'OKR Professional Certified', date: '29/06/2023', link: 'https://drive.google.com/file/d/1e9rIQUGs2uzYXgKl70uL8DXQIO0rMTmk/view?usp=sharing' }, { title: 'OKR Champion Professional Certification OKRCPC', date: '16/04/2024', link: 'https://www.credly.com/badges/38f25cf5-aef4-47da-9563-d16e3614a72e' }, { title: 'OKR Master Professional Certification OKRMPC', date: '16/04/2024', link: 'https://www.credly.com/badges/0bdad0ea-d660-4d54-9ad0-622008d12c5a' } ] },
+            { category: 'Modelos de Negocio Certiprof', tag: 'Business Strategy & OKR', icon: `<svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-teal-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 10h16M4 14h16M4 18h16" /></svg>`, certifications: [ { title: 'Business Model Canvas Essentials Professional BMCPC', date: '28/08/2023', link: 'https://drive.google.com/file/d/1JJvHmCie4CjDgyEOL0ZcTUct20pbWZxM/view?usp=sharing' }, { title: 'Business Model Canvas Professional Certificate BMCPC', date: '19/02/2024', link: 'https://www.credly.com/badges/f8bc9130-69e1-4c35-b821-fe26c10fcbff/public_url' }, { title: 'Certified Lean Canvas', date: '', link: 'https://drive.google.com/file/d/1VgOA8U1cfMtWlispC108ydNT5m1MZmse/view?usp=sharing' }, { title: 'Innovación Management Professional Certification IMPC', date: '12/11/2024', link: 'https://www.credly.com/badges/71634ca3-e137-4421-915b-4893df1fa442/linked_in_profile' } ] },
+            { category: 'Arquitectura empresarial', tag: 'Arquitectura Empresarial', icon: `<svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-orange-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 21V10a2 2 0 00-2-2H7a2 2 0 00-2 2v11m14 0M12 21V4m0 0H7m5 0h5M4 21h16" /></svg>`, certifications: [ { title: 'Arquitectura Empresarial Togaf 10', date: '26/04/2024', link: 'https://drive.google.com/file/d/1PVSu6NvT64p1NG4GocNUywNre5ILSi4E/view?usp=drive_link' } ] },
+            { category: 'IBM Product Manager', tag: 'Product Management', icon: `<svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" /></svg>`, certifications: [ { title: 'IBM Product Manager', date: '', link: 'https://coursera.org/share/2f1575de5017f97f03d354f2a323278f' }, { title: 'IBM Product Management Essentials', date: '28/07/2025', link: 'https://www.credly.com/earner/earned/badge/8898f084-11ea-4048-81b4-950f355bef9d' }, { title: 'IBM Product Management: An Introduction', date: '28/07/2025', link: 'https://coursera.org/share/6963e53950afa44960fe2c4e6765bff3' }, { title: 'IBM Product Management: Foundations & Stakeholder Collaboration', date: '22/01/2025', link: 'https://coursera.org/share/211a3d257f49b9e8eb152e3335d61506' }, { title: 'IBM Product Management: Initial Product Strategy and Plan', date: '07/02/2025', link: 'https://coursera.org/share/500b5f8f19f01f642122201ec8c2d034' }, { title: 'IBM Product Management: Developing and Delivering a New Product', date: '24/07/2025', link: 'https://coursera.org/share/8b5864599e5421b168c2e7758fb5f8fa' }, { title: 'IBM Introduction to Agile Development and Scrum', date: '19/06/2025', link: 'https://coursera.org/share/45da4a7f94e688927b973d89b76cb605' }, { title: 'IBM Product Management: Capstone Project', date: '25/06/2025', link: 'https://coursera.org/share/ecacafabe979341d704eee1c89948760' }, { title: 'IBM Practice Exam for AIPMM Certified Product Manager', date: '28/06/2025', link: 'https://coursera.org/share/132face3e0abbcbeeacfdf9d877e88f2' } ] },
+            { category: 'Product Ideation, Design, and Management', tag: 'Product Management', icon: `<svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" /></svg>`, certifications: [ { title: 'Product Management Essentials', date: '02/09/2025', link: 'https://coursera.org/share/86f215c3d1811d3a388e82c7f8dc0af4' }, { title: 'Developing Innovative Ideas for Product Leaders', date: '01/09/2025', link: 'https://coursera.org/share/eb78221f10b03221a98cb4aea405c0d6' } ] },
+            { category: 'Product Owner Certiprof', tag: 'Product Management', icon: `<svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-lime-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>`, certifications: [ { title: 'SCRUM Product Owner Professional Certificate', date: '13/05/2021', link: 'https://www.credly.com/earner/earned/badge/fb77e5ab-13f5-45cf-9691-84193286a3d6' }, { title: 'SCRUM Product Owner Professional Certificate', date: '01/02/2024', link: 'https://www.credly.com/earner/earned/badge/fb77e5ab-13f5-45cf-9691-84193286a3d6' } ] },
+            { category: 'Product Manager SAFE', tag: 'Product Management', icon: `<svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>`, certifications: [ { title: 'Certified SAFe 5 Product Owner/Product Manager', date: '10/03/2023', link: 'https://www.credly.com/earner/earned/badge/fb77e5ab-13f5-45cf-9691-84193286a3d6' }, { title: 'Certified Proyectos a Producto Digital', date: '04/09/2024', link: 'https://verified.sertifier.com/es/verify/19747654127568/' } ] },
+            { category: 'Gestion de proyectos', tag: 'Gestion de Proyectos', icon: `<svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-cyan-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>`, certifications: [ { title: 'Software Project Leader Professional Certification SPLPC', date: '02/10/2024', link: 'https://www.credly.com/badges/0f3a4bf5-62ab-4cf1-8d16-022f5d6077a7/public_url' }, { title: 'AI Project Manager Professional Certification AIPMFPC', date: '03/01/2025', link: 'https://drive.google.com/file/d/1UIPHXJhaH8vePNLlQvB4bO1Rs_5hQlrB/view?usp=sharing' }, { title: 'PMI Fundamentals of waterfall project management', date: '08/08/2022', link: 'https://www.credly.com/badges/7127e7bf-cf6d-4f11-a4c9-045d9b0d1402' }, { title: 'PMI Fundamentals of agile project management', date: '09/08/2022', link: 'https://www.credly.com/badges/73084e34-5bfa-4e1c-97bc-472b098b787c' } ] },
+            { category: 'Lean Product Discovery Certiprof', tag: 'Product Discovery', icon: `<svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>`, certifications: [ { title: 'Design Sprint Certification CPDSC', date: '14/02/2024', link: 'https://www.credly.com/badges/6c966b99-c703-4c1a-9e6b-b1ec734ce5ab' }, { title: 'Certified Lean Startup', date: '', link: 'https://drive.google.com/file/d/1wKhLTKsEs2OLsjuxN6RzHWF_7Ic9DxtZ/view?usp=sharing' }, { title: 'Design Thinking Professional Certificate - DTPC', date: '23/06/2021', link: 'https://www.credly.com/badges/70208e04-9487-47d0-9625-fa7fa7002425/public_url' }, { title: 'Design Thinking Professional Certificate - DTPC', date: '20/12/2024', link: 'https://www.credly.com/badges/70208e04-9487-47d0-9625-fa7fa7002425/public_url' }, { title: 'Lean Product Discovery Professional Certification LPDPC', date: '27/02/2024', link: 'https://www.credly.com/badges/70208e04-9487-47d0-9625-fa7fa7002425/public_url' }, { title: 'Innovation Management Professional Certification - IMPC', date: '11/12/2024', link: 'https://www.credly.com/badges/71634ca3-e137-4421-915b-4893df1fa442/public_url' } ] },
+            { category: 'Gestión de procesos y Lean Six Sigma', tag: 'Gestion de Procesos & Lean Six Sigma', icon: `<svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-rose-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11 4a2 2 0 114 0v1a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-1a2 2 0 100 4h1a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-1a2 2 0 10-4 0v1a1 1 0 01-1 1H7a1 1 0 01-1-1v-3a1 1 0 00-1-1H4a2 2 0 110-4h1a1 1 0 001-1V7a1 1 0 011-1h3a1 1 0 001-1V4z" /></svg>`, certifications: [ { title: 'Business Process Manage and Modeling', date: '11/05/2022', link: 'https://drive.google.com/file/d/1nL7EC80qfdSZ3bMTw3j1ug_qe3ePC07C/view?usp=sharing' }, { title: 'Modelo ADDI ¿Cómo implementar la gestión por procesos', date: '21/05/2021', link: 'https://drive.google.com/file/d/1DwUmIRcWYiFZUF_5jpHV8jXAmVM5UZ7N/view?usp=sharing' }, { title: 'Certified White Belt Lean Six Sigma Certificate', date: '', link: 'https://drive.google.com/file/d/1yok2mEmbEgmvlSOZhbgl6CUZOT5km_Fd/view?usp=sharing' }, { title: 'Certified Yellow Belt Lean Six Sigma Certificate', date: '18/05/2025', link: 'https://www.credly.com/badges/0d81c94a-2147-4b03-a53e-9916d14d2b93' }, { title: 'Lean Six Sigma Yellow Belt y 8D\'s', date: '23/08/2021', link: 'https://drive.google.com/file/d/1uuecDJVtLqdiWzZX-_VZpH_7BUYNCSFr/view?usp=sharing' }, { title: 'Lean Six Sigma Green Belt Certification LSSGBPC', date: '06/02/2024', link: 'https://www.credly.com/badges/b961c608-4dad-4ec9-8a9e-05360f9afbc7' }, { title: 'Lean Six Sigma Black Belt Certification - CSSBBPC', date: '18/09/2024', link: 'https://www.credly.com/badges/a72ef823-809d-4f90-97b2-cc7ad3f64168/public_url' } ] },
+            { category: 'Lean Management Certiprof', tag: 'Gestion de Procesos & Lean Six Sigma', icon: `<svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-fuchsia-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>`, certifications: [ { title: 'Lean Management Professional Certification (LMPC)', date: '18/12/2024', link: 'https://drive.google.com/file/d/1te5glWi02bw-LxkcGo0KkrxlCg8KZGx2/view?usp=sharing' } ] },
+            { category: 'Customer Experience', tag: 'Customer Experience', icon: `<svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>`, certifications: [ { title: 'Certified Customer Experience', date: '17/09/2024', link: 'https://drive.google.com/file/d/1-2q64DusfC7OpNVkAz2cZ9mpFgr02JvV/view?usp=sharing' }, { title: 'Certified Customer Experience', date: '21/01/2025', link: 'https://drive.google.com/file/d/1ab1d_feC9WovBfRDYChOkZgEQ8aC8X_K/view?usp=sharing' } ] },
+            { category: 'Mentoring y coaching', tag: 'Mentoring & Coaching', icon: `<svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-sky-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg>`, certifications: [ { title: 'Agile business analyst', date: '', link: '#' }, { title: 'Transición a la Agilidad', date: '', link: '#' }, { title: 'Requeriments slicing', date: '', link: '#' }, { title: 'Técnicas de Priorización', date: '', link: '#' }, { title: 'Transición a Product Owner', date: '', link: '#' }, { title: 'IA aplicada para Business Analyst y Product Owner', date: '', link: '#' }, { title: 'Certified Agile Coach', date: '09/09/2024', link: 'https://drive.google.com/file/d/1dJiuH8wDx0ag3K6Pcplgl3wrU0tPec0Z/view?usp=sharing' }, { title: 'Agile Coach Professional Certificate', date: '09/09/2024', link: 'https://certificate.cel-edu.com/validacion?codigo=335654966' } ] },
+            { category: 'Kanban Certiprof', tag: 'Agile', icon: `<svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-violet-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2m0 10V7" /></svg>`, certifications: [ { title: 'Kanban Essentials Professional Certification - KEPC', date: '11/11/2021', link: 'https://www.credly.com/earner/earned/badge/e651487d-638c-4136-b2a6-ac46a9d745dc' }, { title: 'Kanban Essentials Professional Certification - KEPC', date: '07/01/2025', link: 'https://drive.google.com/file/d/1p3zco16Hh1OUWhdtTZaql0M2Eh6kR779/view?usp=sharing'}, { title: 'Prácticas para Mejorar los Flujos de Trabajo', date: '', link: 'https://drive.google.com/file/d/19Tx8_lNEZFhT83iPhfEBVKjIBgImF21H/view?usp=sharing' } ] },
+            { category: 'Inteligencia Artificial', tag: 'Tech & Data', icon: `<svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01" /></svg>`, certifications: [ { title: 'Prompt Engineering Professional Certification CPEFPC', date: '01/10/2024', link: 'https://www.credly.com/badges/3b773ce2-8d97-4572-bac2-84c24a4bba11' }, { title: 'Generative AI Professional Certification GAIPC', date: '22/09/2024', link: 'https://www.credly.com/badges/54d79788-a77c-454c-ae90-82d6f573d28c' }, { title: 'Blockchain Professional Certificate BCPC', date: '22/09/2024', link: 'https://www.credly.com/badges/7c056685-5161-4a71-8eda-942f6c2c90c2' }, { title: 'Artificial Intelligence Professional Certificate - CAIPC', date: '29/01/2025', link: 'https://www.credly.com/badges/ac4549ad-f526-4ead-9cba-500522980cdc/public_url' }, { title: 'Tecnología e IA en seguros', date: '14/07/2025', link: 'https://coursera.org/share/49a9247bf2a35c28bd7bed19eaea241a' } ] },
+            { category: 'Marketing, Data y Ciberseguridad', tag: 'Tech & Data', icon: `<svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-sky-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21 3.582 4-8 4s-8-1.79-8-4" /></svg>`, certifications: [ { title: 'Digital Marketing Professional Certificate -DMPC', date: '01/09/2025', link: 'https://www.credly.com/earner/earned/badge/1b33f521-88fe-4036-a892-e31ccc9b2557' }, { title: 'Data storytelling Professional Certification DSTPC', date: '28/01/2025', link: 'https://www.credly.com/badges/c8e28117-8348-4a10-b071-fd8607fc5fc6/public_url' }, { title: 'Business Intelligence Analyst Professional Certification BIAPC', date: '28/01/2025', link: 'https://www.credly.com/badges/a3742065-c03d-4f85-86a1-88f4f0eac11a' }, { title: 'Lead Cybersecurity Professional Certification - LCSPC', date: '29/01/2025', link: 'https://www.credly.com/earner/earned/badge/bda10b2c-b7d4-4215-b065-4c48358dbe91' } ] },
+            { category: 'DevOps Certiprof', tag: 'Tech & Data', icon: `<svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 9l4-4 4 4m0 6l-4 4-4-4" /></svg>`, certifications: [ { title: 'DevOps Essential Professional Certificate DEPC', date: '04/09/2024', link: 'https://www.credly.com/badges/e0050ff9-ff29-4339-a9f5-e19dd45e859a' }, { title: 'DevOps Advanced Professional Certification - DAPC', date: '29/01/2025', link: 'https://www.credly.com/badges/0d74d782-615e-4d3c-887f-87913e60bbb3' } ] },
+            { category: 'Business Strategy', tag: 'Business Strategy & OKR', icon: `<svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9V3m0 18a9 9 0 009-9m-9 9a9 9 0 00-9-9" /></svg>`, certifications: [ { title: 'Foundations of Business Strategy', date: '', link: 'https://coursera.org/share/94ceae64c067d9a135a110167ee7e278' }, { title: 'Advanced Business Strategy', date: '', link: 'https://coursera.org/share/ba68be90510b4844be56bb62e74a03c4' } ] },
+        ];
+
+        const container = document.getElementById('certifications-container');
+        const filterContainer = document.getElementById('filter-container');
+        const searchInput = document.getElementById('search-input');
+        
+        const tags = ['Todos', ...new Set(certificationGroups.map(g => g.tag))];
+        let openAccordion = null;
+
+        function renderFilterButtons() {
+            filterContainer.innerHTML = tags.map(tag => 
+                `<button class="filter-btn text-left w-full py-3 px-4 rounded-lg" data-tag="${tag}">
+                    ${tag}
+                </button>`
+            ).join('');
+            // Set first button as active
+            filterContainer.querySelector('.filter-btn').classList.add('active');
+        }
+
+        function displayCertifications(groups) {
+            if (groups.length === 0) {
+                container.innerHTML = `<div class="frosted-glass rounded-xl p-8 text-center text-gray-400">No se encontraron certificaciones.</div>`;
+                return;
+            }
+            container.innerHTML = groups.map((group, index) => {
+                const uniqueId = group.category.replace(/[^\w]/g, '-') + '-' + index;
+                return `
+                <div class="cert-card frosted-glass rounded-xl shadow-lg overflow-hidden" style="animation-delay: ${index * 50}ms">
+                    <div id="header-${uniqueId}" class="card-header p-5 flex justify-between items-center">
+                        <div class="flex items-center space-x-4">
+                            ${group.icon}
+                            <h3 class="font-semibold text-lg text-white">${group.category}</h3>
+                        </div>
+                        <svg class="chevron h-6 w-6 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                    </div>
+                    <div id="content-${uniqueId}" class="cert-content px-5">
+                        <ul class="divide-y divide-gray-700/50">
+                            ${group.certifications.map(cert => `
+                                <li class="py-3 flex justify-between items-center">
+                                    <div>
+                                        <p class="text-white">${cert.title}</p>
+                                        <p class="text-sm text-gray-400">${cert.date || 'Sin fecha'}</p>
+                                    </div>
+                                    <a href="${cert.link}" target="_blank" rel="noopener noreferrer" class="ml-4 flex-shrink-0 text-cyan-400 hover:text-cyan-300 font-semibold transition-colors">Ver</a>
+                                </li>
+                            `).join('')}
+                        </ul>
+                    </div>
+                </div>
+            `}).join('');
+            
+            // Re-attach event listeners
+            groups.forEach((group, index) => {
+                const uniqueId = group.category.replace(/[^\w]/g, '-') + '-' + index;
+                const header = document.getElementById(`header-${uniqueId}`);
+                header.addEventListener('click', () => toggleAccordion(uniqueId));
+            });
+        }
+        
+        function toggleAccordion(id) {
+            if(openAccordion && openAccordion !== id) {
+                 const prevContent = document.getElementById(`content-${openAccordion}`);
+                 if(prevContent) prevContent.classList.remove('open');
+            }
+            const content = document.getElementById(`content-${id}`);
+             if(content) {
+                content.classList.toggle('open');
+                openAccordion = content.classList.contains('open') ? id : null;
+            }
+        }
+        
+        function updateView() {
+            const activeTag = filterContainer.querySelector('.filter-btn.active').dataset.tag;
+            const searchTerm = searchInput.value.toLowerCase();
+            
+            let filteredGroups = certificationGroups;
+
+            if (activeTag !== 'Todos') {
+                filteredGroups = filteredGroups.filter(group => group.tag === activeTag);
+            }
+
+            if (searchTerm) {
+                filteredGroups = filteredGroups.filter(group => 
+                    group.category.toLowerCase().includes(searchTerm) ||
+                    group.certifications.some(cert => cert.title.toLowerCase().includes(searchTerm))
+                );
+            }
+            
+            displayCertifications(filteredGroups);
+        }
+
+        filterContainer.addEventListener('click', e => {
+            const targetButton = e.target.closest('.filter-btn');
+            if (targetButton) {
+                filterContainer.querySelector('.filter-btn.active').classList.remove('active');
+                targetButton.classList.add('active');
+                updateView();
+            }
+        });
+
+        searchInput.addEventListener('input', updateView);
+
+        // Initial render
+        renderFilterButtons();
+        updateView();
+    </script>
+</body>
+</html>
+
+
